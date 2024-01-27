@@ -15,7 +15,7 @@ def signup():
     email = request.form['email']
     phone_number = request.form['phone']
     id = 'cm-' + str(uuid4())
-    pwd = '!@mElv!s@19'
+    pwd = ''
     
     pwd = parse.quote(pwd, safe='')
     engine = create_engine(f'mysql+mysqldb://root:{pwd}@localhost:3306/wishop')
