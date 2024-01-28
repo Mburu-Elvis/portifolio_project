@@ -13,6 +13,15 @@ class Customer(Base):
     customer_name = Column(String(50), nullable=False)
     phone_number = Column(String(10), nullable=False, unique=True)
     email = Column(String(100), unique=True, nullable=False)
+    password = Column(String(100), nullable=False)
+    
+    def to_dict(self):
+        return {
+            'customer_name': self.customer_name,
+            'phone_number': self.customer_name,
+            'email': self.email,
+            'password': self.password
+        }
 
 class Rider(Base):
     __tablename__ = 'riders'
@@ -21,6 +30,14 @@ class Rider(Base):
     phone_number = Column(String(10), nullable=False, unique=True)
     number_plate = Column(String(9), nullable=False, unique=False)
     email = Column(String(100), nullable=False, unique=True)
+    
+    def to_dict(self):
+        return {
+            'rider_name': self.rider_name,
+            'phone_number': self.phone_number,
+            'number_plate': self.number_plate,
+            'email': self.email
+        }
 
 class Product(Base):
     __tablename__ = 'products'
@@ -29,6 +46,14 @@ class Product(Base):
     price = Column(Integer, nullable=False)
     quantity = Column(Integer, nullable=False)
 
+    def to_dict(self):
+        return {
+            'product_id': self.product_id,
+            'product_name': self.product_name,
+            'price': self.price,
+            'quantity': self.quantity
+        }
+
 class Order(Base):
     __tablename__ = 'orders'
     order_id = Column(String(36), nullable=False, primary_key=True)
@@ -36,6 +61,14 @@ class Order(Base):
     number_of_items = Column(Integer, nullable=False)
     date = Column(DateTime, nullable=False)
     total_amount = Column(Integer, nullable=False)
+    
+    def to_dict(self):
+        return {
+            'order_id': self.order_id,
+            'number_of_items': self.number_of_items,
+            'date': self.date,
+            'total_amount': self.total_amount
+        }
 
 pwd = '!@mElv!s@19'
 pwd = urllib.parse.quote(pwd, safe='')

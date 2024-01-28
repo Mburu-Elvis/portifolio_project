@@ -1,23 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
-</head>
-<body>
-    <h1>Signup</h1>
-    <form action="/signup" method="post">
-        <label for="customer_name">Username: </label> 
-        <input type="text" name="customer_name" id="customer_name">
-        <br>
-        <label for="email">Email :</label>
-        <input type="email" name="email" id="email">
-        <br>
-        <label for="phone">Phone number :</label>
-        <input type="text" name="phone_number" id="phone">
-        <br>
-        <button type="submit">Submit</button>
-    </form>
-</body>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WiShop</title>
+        <link rel="stylesheet" href="static/style.css">
+        <script src="https://kit.fontawesome.com/fb8b184c93.js" crossorigin="anonymous"></script>
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="form-box">
+                <h1 id="title">Sign Up</h1>
+                <form>
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="text" name="customer_name" placeholder="Name">
+                        </div>
+
+                        <div class="input-field">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="email" name="email" placeholder="email">
+                        </div>
+
+                        <div class="input-field" id="phoneNumber">
+                            <i class="fa-solid fa-phone"></i>
+                            <input type="text" name="phone_number" placeholder="Phone number">
+                        </div>
+
+                        <div class="input-field">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" name="password" placeholder="Password">
+                        </div>
+                        <p>Forget password? <a href="#">Click Here!</a></p>
+                    </div>
+                    <div class="button-field">
+                        <button type="button" id="signupBtn">Sign up</button>
+                        <button type="button" id="signinBtn" class="disable">Sign in</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+        <script>
+            let signupBtn = document.getElementById("signupBtn");
+            let signinBtn = document.getElementById("signinBtn");
+            let phoneNumber = document.getElementById("phoneNumber");
+            let title = document.getElementById("title");
+
+            signupBtn.onclick = function(){
+                nameField.style.maxHeight = "60px";
+                title.innerHTML = "Sign Up";
+                signupBtn.classList.remove("disable");
+                
+                signinBtn.classList.add("disable");
+            }
+    
+            signinBtn.onclick = function(){
+                phoneNumber.style.maxHeight = "0";
+                title.innerHTML = "Sign In";
+                signupBtn.classList.add("disable");
+                signinBtn.classList.remove("disable");
+            }
+
+
+
+        </script>
+    </body>
 </html>
