@@ -1,5 +1,7 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
+        <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>WiShop</title>
         <link rel="stylesheet" href="static/style.css">
@@ -31,12 +33,13 @@
                             <i class="fa-solid fa-lock"></i>
                             <input type="password" name="password" placeholder="Password">
                         </div>
-                        <p>Forget password? <a href="#">Click Here!</a></p>
+                        
                     </div>
                     <div class="button-field">
                         <button type="button" id="signupBtn">Sign up</button>
                         <button type="button" id="signinBtn" class="disable">Sign in</button>
                     </div>
+                    <p>Forget password? <a href="#">Click Here!</a></p>
                 </form>
 
             </div>
@@ -48,20 +51,21 @@
             let phoneNumber = document.getElementById("phoneNumber");
             let title = document.getElementById("title");
 
-            signupBtn.onclick = function(){
-                nameField.style.maxHeight = "60px";
-                title.innerHTML = "Sign Up";
-                signupBtn.classList.remove("disable");
-                
-                signinBtn.classList.add("disable");
-            }
-    
             signinBtn.onclick = function(){
                 phoneNumber.style.maxHeight = "0";
                 title.innerHTML = "Sign In";
                 signupBtn.classList.add("disable");
                 signinBtn.classList.remove("disable");
-            }
+            };
+
+            signupBtn.onclick = function(){
+                phoneNumber.style.maxHeight = "60px";
+                title.innerHTML = "Sign Up";
+                signupBtn.classList.remove("disable");
+                signinBtn.classList.add("disable");
+                window.location.reload();
+            };
+    
 
 
 
