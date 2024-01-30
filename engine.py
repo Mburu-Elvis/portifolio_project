@@ -49,7 +49,7 @@ class Product(Base, BaseModel):
 class Order(Base, BaseModel):
     __tablename__ = 'orders'
     order_id = Column(String(36), nullable=False, primary_key=True)
-    order_items = Column(ARRAY(String(50)), nullable=False)
+    order_items = Column(String(50), nullable=False)
     customer_id = Column(String(40), nullable=False)
     location = Column(String(50), nullable=False)
     number_of_items = Column(Integer, nullable=False)
