@@ -8,7 +8,7 @@
 .container{
     width: 100%;
     height: 100vh;
-    background-image: linear-gradient(rgba(0, 0, 50, 0.8),rgba(0, 0, 50, 0.8)), url(images/background_image.jpeg);
+    background-image: linear-gradient(rgba(0, 0, 50, 0.8),rgba(0, 0, 50, 0.8)), url(background_image.jpeg);
     background-position: center;
     background-size: cover;
     position: relative;
@@ -100,6 +100,127 @@ form p a{
     height: 250px;
 }
 
-.submit {
-    padding-top: 10px;
+.dashboard{ 
+    width: 100%;
+    height: 100vh;
+    background-image: url(dashboard_image.jpeg);
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+
+.cards-box{
+    width: 90%;
+    height: 90vh;
+    max-width: 1000px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: hsl(46, 54%, 79%);
+    padding: 50px 60px 70px;
+    text-align: center;
+
+}
+
+.food_card{
+    width: 100px;
+    height: 4vh;
+    top: 15%;
+    left: 20%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+
+}
+
+.food_card img {
+    width: 100%;
+    border-radius: 0px;
+
+}
+.drinks_card{
+    width: 100px;
+    height: 4vh;
+    top: 15%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+
+}
+
+.drinks_card img {
+    width: 100%;
+    border-radius: 0px;
+
+}
+.groceries_card{
+    width: 100px;
+    height: 4vh;
+    top: 15%;
+    left: 80%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+
+}
+
+.groceries_card img {
+    width: 100%;
+    border-radius: 0px;
+
+}
+
+.cakes_card{
+    width: 100px;
+    height: 4vh;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+
+}
+
+.cakes_card img {
+    width: 100%;
+    border-radius: 0px;
+
+}
+
+.supermarket_card{
+    width: 100px;
+    height: 4vh;
+    top: 50%;
+    left: 20%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+
+}
+
+.supermarket_card img {
+    width: 100%;
+    border-radius: 0px;
+
+}
+.gas_card{
+    width: 120px;
+    height: 8vh;
+    top: 55%;
+    left: 80%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+
+}
+
+.gas_card img {
+    width: 100%;
+    border-radius: 0px;
+
+}
+
+.cards-box h1{
+    text-align: center;
+    font-size: 16px;
+}
+.cards-box h1 a{
+    text-decoration: none;
+    color: #285ab8
 }
