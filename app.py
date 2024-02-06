@@ -6,8 +6,6 @@ from uuid import uuid4
 import urllib
 
 
-app = Flask(__name__)
-pwd = '!@mElv!s@19'
 pwd = urllib.parse.quote(pwd)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqldb://root:{pwd}@localhost:3306/wishop'
 db = SQLAlchemy(app)
