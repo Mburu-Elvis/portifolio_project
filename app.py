@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, make_response, jsonify, redirect
+from flask import url_for
 from flask_sqlalchemy import SQLAlchemy
 from engine import Base, Customer, Rider, Product, Order, engine
 from uuid import uuid4
@@ -55,6 +56,11 @@ def login():
         return render_template('login.html', error="Incorrect password")
     return render_template('login.html', error=None)
 
+@app.route('/food')
+def food():
+    print('endpoint queried')
+    return render_template('food.html')
+
 @app.route('/customers/password/reset')
 
 @app.route('/api/v1.0/products')
@@ -69,7 +75,7 @@ def get_products():
         return jsonify({"products": []})
 
 @app.route('/api/v1.0/products/<int:product_id>')
-def get_project(product_id):
+def get_product(product_id):
     '''Returns a product of id "id"'''
     try:
         with db.session.begin():

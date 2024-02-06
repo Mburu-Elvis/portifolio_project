@@ -18,6 +18,8 @@ class BaseModel:
     
     def __repr__(self):
         return f"<{self.__class__.__name__} ({self.id}) {self.__dict__}>"
+
+
 class Customer(Base, BaseModel):
     __tablename__ = 'customers'
     customer_id = Column(String(40), nullable=False, unique=True, primary_key=True)
@@ -26,31 +28,55 @@ class Customer(Base, BaseModel):
     email = Column(String(100), unique=True, nullable=False)
     password = Column(String(100), nullable=False)
 
+    orders = relationship("Order", back_populates="customer")
+    deliver = relationship("Delivery", back_populates="customer")
+
+class Order(Base, BaseModel):
+    __tablename__ = 'orders'
+    order_id = Column(String(36), nullable=False, primary_key=True)
+    customer_id = Column(String(40), ForeignKey('customers.customer_id'),nullable=False)
+    location = Column(String(50), nullable=False)
+    order_date = Column(DateTime, nullable=False)
+    total_amount = Column(Integer, nullable=False)
+    order_status = Column(Enum("received", "processed", "on-delivery", "delivered"))
+
+    customer = relationship("Customer", back_populates="orders")
+    orderItems = relationship("OrderItems", back_populates="order_item")
+
+
+class OrderItems(Base, BaseModel):
+    __tablename__ = 'order_items'
+    order_item_id = Column(String(36), primary_key=True)
+    order_id = Column(String(36), ForeignKey('orders.order_id'))
+    product_id = Column(Integer, ForeignKey('products.product_id'))
+    quantity = Column(Integer, nullable=False)
+    price_per_unit = Column(Integer, nullable=False)
+    sub_total = Column(Integer, nullable=False)
+
+    order_item = relationship("Order", back_populates="order_items")
+    orderProducts = relationship("Product", back_populates="orderItems")
+    deliver = relationship("Delivery", back_populates="order")
+
+
 class Product(Base, BaseModel):
     __tablename__ = 'products'
     product_id = Column(Integer, nullable=False, primary_key=True)
     product_name = Column(String(50), nullable=False, unique=True)
-    category_id = Column(Integer, ForeignKey('products_category', back_populates='ProductCategory'), nullable=False)
+    description = Column(String(1000), nullable=False)
+    category_id = Column(Integer, ForeignKey('products_category'), nullable=False)
     price = Column(Integer, nullable=False)
     quantity = Column(Integer, nullable=False)
+
+    orderItems = relationship("OrderItems", back_populates="products")
+    productCategory = relationship("ProductCategory", back_populates="products")
+
 
 class ProductCategory(Base, BaseModel):
     __tablename__ = 'products_category'
     category_id = Column(Integer, nullable=False, primary_key=True)
     category_name =  Column(String(50), nullable=False)
 
-
-class Order(Base, BaseModel):
-    __tablename__ = 'orders'
-    order_id = Column(String(36), nullable=False, primary_key=True)
-    order_items = Column(String(50), nullable=False)
-    customer_id = Column(String(40), ForeignKey('customers.customer_id'),nullable=False)
-    product_id = Column(Integer, ForeignKey('products.product_id'))
-    location = Column(String(50), nullable=False)
-    number_of_items = Column(Integer, nullable=False)
-    date = Column(DateTime, nullable=False)
-    total_amount = Column(Integer, nullable=False)
-    # customer = relationship("User", back_populates=)
+    product = relationship("Product", back_populates="productCategory")
 
 
 class Rider(Base, BaseModel):
@@ -62,6 +88,8 @@ class Rider(Base, BaseModel):
     email = Column(String(100), nullable=False, unique=True)
     available = Column(Enum('available', 'on-delivery', 'unavailable'), default='available')
 
+    deliver = relationship("Delivery", back_populates="rider")
+
 
 class Delivery(Base, BaseModel):
     __tablename__ = 'delivery'
@@ -69,18 +97,9 @@ class Delivery(Base, BaseModel):
     date_time = Column(DateTime, nullable=False)
     customer_id = Column(String(40), ForeignKey('customers.customer_id'))
     order_id = Column(String(40), ForeignKey('orders.order_id'))
+    rider_id = Column(String(40), ForeignKey('riders.rider_id'))
     payment_message = Column(String(40), nullable=False, unique=True)
 
-
-class Suppliers(Base, BaseModel):
-    __tablename__ = 'suppliers'
-    supplier_id = Column(Integer, primary_key=True)
-    supplier_name = Column(String(50), nullable=False, unique=True)
-    location = Column(String(50), nullable=False)
-    #products = Column(String())
-
-
-pwd = '!@mElv!s@19'
-pwd = urllib.parse.quote(pwd, safe='')
-engine = create_engine(f'mysql+mysqldb://root:{pwd}@localhost:3306/wishop')
-Base.metadata.create_all(engine)
+    order = relationship("Order", back_populates="delivery")
+    rider = relationship("Rider", back_populates="delivery")
+    customer = relationship("Customer", back_populates="delivery")
