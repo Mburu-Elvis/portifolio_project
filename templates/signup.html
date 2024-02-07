@@ -39,7 +39,9 @@
                         <button type="button" id="signupBtn">Sign up</button>
                         <button type="button" id="signinBtn" class="disable">Sign in</button>
                     </div>
-
+                    {% if error %}
+                      <p>{{ error }}</p>
+                    {% endif %}
                     <div class="button-field submit">
                         <button type="submit" >Submit</button>
                     </div>

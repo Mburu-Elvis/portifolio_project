@@ -1,18 +1,17 @@
 from flask import Flask, request, render_template, make_response, jsonify, redirect
 from flask import url_for
 from flask_sqlalchemy import SQLAlchemy
-from engine import Base, Customer, Rider, Product, Order, engine
+from engine import Base, Customer, Rider, Product, Order, OrderItems, ProductCategory, Delivery
 from uuid import uuid4
 import urllib
 
 
 app = Flask(__name__)
-pwd = '!@mElv!s@19'
 pwd = urllib.parse.quote(pwd)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqldb://root:{pwd}@localhost:3306/wishop'
 db = SQLAlchemy(app)
 
-@app.route('/signup', methods=["POST", "GET"])
+@app.route('/signup', methods=["GET", "POST"])
 def signup():
     if request.method == 'POST':
         try:
@@ -22,19 +21,18 @@ def signup():
             password = request.form['password']
         except KeyError:
             return render_template('signup.html', error="Please fill in all required fields")
-        
-        id = 'cm-' + str(uuid4())
+        customer_id = 'cm-' + str(uuid4())
         try:
             new_customer = Customer(
-                customer_id = id,
+                customer_id=customer_id,
                 customer_name=username,
-                phone_number = phone_number,
-                email = email,
-                password = password
+                phone_number=phone_number,
+                email=email,
+                password=password
             )
             db.session.add(new_customer)
             db.session.commit()
-            return render_template('dashboard.html')
+            return redirect(url_for('dashboard'))
         except Exception as e:
             return render_template('signup.html', error=f"Error: {str(e)}")
     return render_template('signup.html', error=None)
@@ -50,11 +48,15 @@ def login():
         try:
             customer = db.one_or_404(db.select(Customer).filter_by(email=email))
         except Exception as e:
-            return render_template('login.html', error="Incorrect email")
+            return render_template('login.html', error=e)
         if customer.password == password:
             return render_template('dashboard.html')
         return render_template('login.html', error="Incorrect password")
     return render_template('login.html', error=None)
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 @app.route('/food')
 def food():
@@ -146,4 +148,3 @@ def get_riders():
 @app.route('/api/v1.0/riders/available')
 def get_available_rider():
     pass
-
