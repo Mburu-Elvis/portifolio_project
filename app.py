@@ -139,7 +139,7 @@ def make_order():
         db.session.add(new_order)
         db.session.commit()
     except Exception as e:
-        return jsonify({"message": e})
+        return jsonify({"message": str(e)})
     for key, value in order_items.items():
         item_id = str(uuid4())
         try:
@@ -155,7 +155,7 @@ def make_order():
             product.quantity -= new_item.quantity
             db.session.add(new_item)
         except Exception as e:
-            return jsonify({"message": e})
+            return jsonify({"message": str(e)})
     db.session.commit()
     return jsonify({"message": "order successful"})
 
@@ -188,7 +188,7 @@ def get_customer_orders(customer_id):
             return jsonify({"message": "customer hasn't made an order yet"})
         return jsonify({"orders": order_list})
     except Exception as e:
-        return jsonify({"message": e})
+        return jsonify({"message": str(e)})
 
 
 @app.route("/api/v1.0/riders")
@@ -200,5 +200,12 @@ def get_riders():
 
 
 @app.route('/api/v1.0/riders/available')
-def get_available_rider():
-    pass
+def get_available_riders():
+    try:
+        riders = db.session.execute(db.select(Rider).filter_by(available='available')).scalars()
+        riders_list = [rider.to_dict() for rider in riders]
+        if riders_list == []:
+            return jsonify({'message': "no rider is currently available"})
+        return jsonify({'riders': riders_list})
+    except Exception as e:
+        return jsonify({"message": str(e)})
