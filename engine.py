@@ -13,7 +13,8 @@ class BaseModel:
         """Returns a dictinary containing all key/values of __dict__"""
         obj_dict = {}
         for key, value in self.__dict__.items():
-            obj_dict[key] = value
+            if not key.startswith('_') and not isinstance(value, sqlalchemy.orm.collections.InstrumentedList):
+                obj_dict[key] = value
         return obj_dict
     
     def __repr__(self):
@@ -30,6 +31,8 @@ class Customer(Base, BaseModel):
     password = Column(String(100), nullable=False)
 
     orders = relationship("Order", back_populates="customer")
+
+
 
 
 class Order(Base, BaseModel):

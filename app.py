@@ -3,10 +3,12 @@ from flask import url_for
 from flask_sqlalchemy import SQLAlchemy
 from engine import Base, Customer, Rider, Product, Order, OrderItems, ProductCategory, Delivery
 from uuid import uuid4
+from datetime import datetime
 import urllib
 
 
 app = Flask(__name__)
+pwd = ''
 pwd = urllib.parse.quote(pwd)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqldb://root:{pwd}@localhost:3306/wishop'
 db = SQLAlchemy(app)
@@ -64,6 +66,8 @@ def food():
     return render_template('food.html')
 
 @app.route('/customers/password/reset')
+def reset_password():
+    pass
 
 @app.route('/api/v1.0/products')
 def get_products():
@@ -102,19 +106,58 @@ def get_customers():
     '''returns a list of all the customers in the db'''
     with db.session.begin():
         customers = db.session.execute(db.select(Customer).order_by(Customer.customer_name)).scalars()
-    if customer_list:
+    if customers:
         customer_list = [customer.to_dict() for customer in customers]
         return jsonify({'customers': customer_list})
     return jsonify({"customers": []})
 
-@app.route('/api/v1.0/customers/<string:email>')
-def get_customer(email):
+@app.route('/api/v1.0/customers/<string:customer_id>')
+def get_customer(customer_id):
     try:
-        with db.session.begin():
-            customer = db.session.execute(db.select(Customer).filter_by(email=email)).scalar_one()
+        customer = db.one_or_404(db.select(Customer).filter_by(customer_id=customer_id))
         return jsonify({'customer': customer.to_dict()})
     except Exception as e:
         return jsonify({"message": "customer doesn't exist"})
+
+@app.route('/ap1/v1.0/make_order', methods=["POST"])
+def make_order():
+    data = request.json
+    order_id = str(uuid4())
+    customer_id = data['customer_id']
+    location = data['location']
+    total_amount = data['total_amount']
+    order_items = data['order_items']
+    try:
+        new_order = Order(
+            order_id = order_id,
+            customer_id = customer_id,
+            location = location,
+            order_date = datetime.now(),
+            total_amount = total_amount,
+            order_status = 'received'
+            )
+        db.session.add(new_order)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": e})
+    for key, value in order_items.items():
+        item_id = str(uuid4())
+        try:
+            new_item = OrderItems(
+                order_item_id = item_id,
+                order_id = order_id,
+                product_id = int(key),
+                quantity = value['quantity'],
+                price_per_unit = db.one_or_404(db.select(Product.price).filter_by(product_id=int(key))),
+                sub_total = value['quantity']*db.one_or_404(db.select(Product.price).filter_by(product_id=int(key)))
+            )
+            product = db.one_or_404(db.select(Product).filter_by(product_id=key))
+            product.quantity -= new_item.quantity
+            db.session.add(new_item)
+        except Exception as e:
+            return jsonify({"message": e})
+    db.session.commit()
+    return jsonify({"message": "order successful"})
 
 @app.route('/api/v1.0/orders')
 def get_orders():
