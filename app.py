@@ -69,38 +69,6 @@ def food():
 def reset_password():
     pass
 
-@app.route('/api/v1.0/products')
-def get_products():
-    '''Returns a list of all the products that can be ordered'''
-    with db.session.begin():
-        products = db.session.execute(db.select(Product).order_by(Product.product_id)).scalars()
-    try:
-        product_list = [product.to_dict() for product in products]
-        return jsonify({'products': product_list})
-    except Exception as e:
-        return jsonify({"products": []})
-
-@app.route('/api/v1.0/products/<int:product_id>')
-def get_product(product_id):
-    '''Returns a product of id "id"'''
-    try:
-        with db.session.begin():
-            product = db.session.execute(db.select(Product).filter_by(product_id=product_id)).scalar_one()
-        return jsonify({'product': product.to_dict()})
-    except Exception as e:
-            return jsonify({"message": "product not found"})
-    
-@app.route('/api/v1.0/products/<string:category>')
-def get_products_by_category(category):
-    '''Returns a list of products belonging to a specific category'''
-    try:
-        with db.session.begin():
-            products = db.session.execute(db.select(Product).filter_by(category=category)).scalars()
-            product_list = [product.to_dict() for product in products]
-        return jsonify({'products': product_list})
-    except Exception as e:
-        return jsonify({"message": "category doesn't exist"})
-
 @app.route('/api/v1.0/customers')
 def get_customers():
     '''returns a list of all the customers in the db'''
@@ -118,6 +86,38 @@ def get_customer(customer_id):
         return jsonify({'customer': customer.to_dict()})
     except Exception as e:
         return jsonify({"message": "customer doesn't exist"})
+
+@app.route('/api/v1.0/products')
+def get_products():
+    '''Returns a list of all the products that can be ordered'''
+    with db.session.begin():
+        products = db.session.execute(db.select(Product).order_by(Product.product_id)).scalars()
+    try:
+        product_list = [product.to_dict() for product in products]
+        return jsonify({'products': product_list})
+    except Exception as e:
+        return jsonify({"products": []})
+
+@app.route('/api/v1.0/products/<int:product_id>')
+def get_product(product_id):
+    '''Returns a product of id "id"'''
+    try:
+        product = db.session.execute(db.select(Product).filter_by(product_id=product_id)).scalar_one()
+        return jsonify({'product': product.to_dict()})
+    except Exception as e:
+            return jsonify({"message": "product not found"})
+    
+@app.route('/api/v1.0/products/<string:category>')
+def get_products_by_category(category):
+    '''Returns a list of products belonging to a specific category'''
+    try:
+        category_id = db.one_or_404(db.select(ProductCategory.category_id).filter_by(category_name=category))
+        print(category_id)
+        products = db.session.execute(db.select(Product).filter_by(category_id=category_id)).scalars()
+        product_list = [product.to_dict() for product in products]
+        return jsonify({'products': product_list})
+    except Exception as e:
+        return jsonify({"message": "category doesn't exist"})
 
 @app.route('/ap1/v1.0/make_order', methods=["POST"])
 def make_order():
@@ -161,23 +161,34 @@ def make_order():
 
 @app.route('/api/v1.0/orders')
 def get_orders():
-    with db.session.begin():
-        orders = db.session.execute(db.select(Order).order_by(Order.date)).scalars()
+    orders = db.session.execute(db.select(Order).order_by(Order.order_date)).scalars()
     order_list = [order.to_dict() for order in orders]
     return jsonify({'orders': order_list})
 
 @app.route('/api/v1.0/orders/<string:order_id>')
 def get_order(order_id):
     try:
-        with db.session.begin():
-            order = db.session.execute(db.select(Order).filter_by(order_id=order_id)).scalar_one()
-        return jsonify({'order': order.to_dict()})
+        order = db.one_or_404(db.select(Order).filter_by(order_id=order_id))
+        return jsonify({"order": order.to_dict()})
     except Exception as e:
         return jsonify({'message': 'order doesn\'t exist'})
     
-@app.route('/api/v1.0/orders/<string:customer_id>')
-def get_customer_order(customer_id):
-    pass
+@app.route('/api/v1.0/customers/orders/<string:customer_id>')
+def get_customer_orders(customer_id):
+    try:
+        customer = db.session.execute(db.select(Customer).filter_by(customer_id=customer_id)).scalar_one()
+        customer_id = customer.customer_id
+    except Exception as e:
+        return jsonify({"message": "customer doesn't exist"})
+        
+    try:
+        orders = db.session.execute(db.select(Order).filter_by(customer_id=customer_id)).scalars()
+        order_list = [order.to_dict() for order in orders]
+        if order_list == []:
+            return jsonify({"message": "customer hasn't made an order yet"})
+        return jsonify({"orders": order_list})
+    except Exception as e:
+        return jsonify({"message": e})
 
 
 @app.route("/api/v1.0/riders")
