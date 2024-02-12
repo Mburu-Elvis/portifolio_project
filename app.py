@@ -8,10 +8,14 @@ import urllib
 
 
 app = Flask(__name__)
-pwd = ''
+pwd = '!@mElv!s@19'
 pwd = urllib.parse.quote(pwd)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqldb://root:{pwd}@localhost:3306/wishop'
 db = SQLAlchemy(app)
+
+@app.route('/demo')
+def demo():
+    return render_template('demo.html')
 
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
@@ -112,7 +116,6 @@ def get_products_by_category(category):
     '''Returns a list of products belonging to a specific category'''
     try:
         category_id = db.one_or_404(db.select(ProductCategory.category_id).filter_by(category_name=category))
-        print(category_id)
         products = db.session.execute(db.select(Product).filter_by(category_id=category_id)).scalars()
         product_list = [product.to_dict() for product in products]
         return jsonify({'products': product_list})

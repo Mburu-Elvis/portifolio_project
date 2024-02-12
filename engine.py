@@ -33,8 +33,6 @@ class Customer(Base, BaseModel):
     orders = relationship("Order", back_populates="customer")
 
 
-
-
 class Order(Base, BaseModel):
     __tablename__ = 'orders'
 
@@ -108,3 +106,11 @@ class Delivery(Base, BaseModel):
 
     order = relationship("Order", back_populates="delivery")
     rider = relationship("Rider", back_populates="delivery")
+
+username = 'root'
+password = '!@mElv!s@19'
+pwd = urllib.parse.quote(password)
+db = 'wishop'
+
+engine = create_engine(f'mysql+mysqldb://{username}:{pwd}@localhost:3306/{db}')
+Base.metadata.create_all(engine)
