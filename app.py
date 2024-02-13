@@ -102,6 +102,7 @@ def get_products():
     except Exception as e:
         return jsonify({"products": []})
 
+
 @app.route('/api/v1.0/products/<int:product_id>')
 def get_product(product_id):
     '''Returns a product of id "id"'''

@@ -107,5 +107,11 @@ class Delivery(Base, BaseModel):
     order = relationship("Order", back_populates="delivery")
     rider = relationship("Rider", back_populates="delivery")
 
+
+
+username = ''
+pwd = ''
+db = ''
+
 engine = create_engine(f'mysql+mysqldb://{username}:{pwd}@localhost:3306/{db}')
 Base.metadata.create_all(engine)
