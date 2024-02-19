@@ -62,7 +62,6 @@ function initialize(products) {
             /* selecting all products then filter them by the search term */
             if (category.value === 'All') {
                 categoryGroup = products;
-
                 selectProducts();
             } else {
                 const lowerCaseType = category.value.toLowerCase();

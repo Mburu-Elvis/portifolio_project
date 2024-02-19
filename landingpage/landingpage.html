@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiShop</title>
+    <link rel="stylesheet" href="landingpage.css">
+</head>
+<body>
+    <section>
+        <div class="circle"></div>
+        <header>
+            <a href="#"><img src="logo1.PNG" class="logo" alt="Wishop logo"> </a>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Sign up</a></li>
+                <li><a href="#">Sign in</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </header>
+        <div class="content">
+            <div class="textBox">
+                <h2>Your Favorite Product<span> <br>At Your Door Step</span></h2>
+                <p>Welcome to WiShop, your ultimate online destination for all your shopping needs! Say goodbye to long queues and crowded aisles, because with WiShop, you can browse, select, and order all your favorite products from the comfort of your own home. Whether you're craving fresh produce from the local market, gourmet delicacies, pantry staples, or premium cuts from the butcher, we've got you covered. </p>
+                <a href="#">Learn More</a>
+            </div>
+            <div class="imgBox">
+                <img src="chicken_and_chips.PNG" class="WiShop" alt="chicken and chips photo">
+            </div>
+        </div>
+        <ul class="thumb">
+            <li><img src="birthday_cake.jpg" onclick="imgSlider('birthday_cake.jpg');changeCircleColor('#607101')" alt="'birthday cake"></li>
+            <li><img src="Milk_shake.PNG" onclick="imgSlider('Milk_shake');changeCircleColor('#714001')" alt="milk shake"></li>
+            <li><img src="chicken_and_chips.PNG"onclick="imgSlider('chicken_and_chips.png');changeCircleColor('#715c01')" alt="chicken and chips"></li>
+        </ul>
+        <ul class="sci">
+            <li><a href="#"><img src="facebook.PNG" alt="facebook logo"></a></li>
+            <li><a href="#"><img src="twitter.PNG" alt="twitter logo"></a></li>
+            <li><a href="#"><img src="instagram.PNG" alt="instagram logo"></a></li>
+        </ul>
+    </section>
+    <footer>
+        <div>
+            <div></div>
+            <div></div>
+        </div>
+    </footer>
+    <script type="text/javascript">
+        function imgSlider(anythin){
+            document.querySelector('.WiShop').src = anything;
+        }
+
+        function changeCircleColor(color){
+            const circle = document.querySelector('.circle');
+            circle.style.background = color;
+        }
+    </script>
+</body>
+</html>

@@ -108,7 +108,6 @@ class Delivery(Base, BaseModel):
     rider = relationship("Rider", back_populates="delivery")
 
 
-
 username = ''
 pwd = ''
 db = ''
