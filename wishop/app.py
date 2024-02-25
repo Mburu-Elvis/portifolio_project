@@ -10,12 +10,17 @@ import urllib
 app = Flask(__name__)
 pwd = ''
 pwd = urllib.parse.quote(pwd)
+print(pwd)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqldb://root:{pwd}@localhost:3306/wishop'
 db = SQLAlchemy(app)
 
 @app.route('/demo')
 def demo():
     return render_template('demo.html')
+
+@app.route('/')
+def landing_page():
+    return "Landing page"
 
 @app.route('/signup', methods=["GET", "POST"])
 def signup():

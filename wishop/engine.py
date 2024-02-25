@@ -110,6 +110,7 @@ class Delivery(Base, BaseModel):
 
 username = ''
 pwd = ''
+pwd = urllib.parse.quote(pwd)
 db = ''
 
 engine = create_engine(f'mysql+mysqldb://{username}:{pwd}@localhost:3306/{db}')
