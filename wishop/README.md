@@ -11,9 +11,9 @@ Customers can easily place orders through our intuitive web application, selecti
 **Flexible Delivery Options:**  
 Choose between normal delivery for standard shipping times or express delivery for near-instantaneous service, albeit at an additional cost.  
 **Streamlined User Experience:**  
-Our integrated web application simplifies the shopping process, reducing the number of applications customers and couriers need to install.
+Our integrated web application simplifies the shopping process, reducing the number of applications customers and couriers need to install.  
 **Secure Payments:**  
-We leverage USSD services from a reliable telecom company for secure payment processing, ensuring smooth and hassle-free transactions.
+We leverage USSD services from a reliable telecom company for secure payment processing, ensuring smooth and hassle-free transactions.  
 **Licensed Riders:**  
 To mitigate operational risks, we carefully select licensed riders who undergo thorough background checks, prioritizing safety and security.
   
